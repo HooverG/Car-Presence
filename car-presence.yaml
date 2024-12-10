@@ -1,7 +1,7 @@
 substitutions:
   name: car-presence-workshop
   friendly_name: "Car Presence Workshop"
-  board: 
+  board: d1_mini
 
 esphome:
   name: ${name}
