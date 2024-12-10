@@ -2,8 +2,6 @@
 
 This project utilizes an ESPHome configuration to detect the presence of a car on a parking spot using a Wemos D1 Mini (ESP8266) board and an ultrasonic sensor. The system determines the car's presence based on measured distances and provides occupancy feedback.
 
----
-
 ## Features
 - **Ultrasonic Distance Measurement**: Uses an ultrasonic sensor to measure distances and identify if a car is present within a defined range.
 - **Wi-Fi Connectivity**: Connects to your Wi-Fi network for remote monitoring via Home Assistant.
@@ -12,15 +10,11 @@ This project utilizes an ESPHome configuration to detect the presence of a car o
 - **Real-Time Status**: Displays IP, MAC address, and firmware version on the dashboard.
 - **Custom Logic for Presence Detection**: Tracks if the distance is within the desired range for a prolonged period.
 
----
-
 ## Hardware Requirements
 - **Wemos D1 Mini (ESP8266)**
 - **Ultrasonic Sensor (e.g., HC-SR04)**
 - **Connecting Wires**
 - **Power Source (5V)**
-
----
 
 ## Connections
 ### Ultrasonic Sensor
@@ -28,8 +22,6 @@ This project utilizes an ESPHome configuration to detect the presence of a car o
 - **Echo Pin**: Connect to D2 (GPIO4) on the Wemos D1 Mini.
 - **VCC**: Connect to the 5V pin on the Wemos D1 Mini.
 - **GND**: Connect to the GND pin on the Wemos D1 Mini.
-
----
 
 ## Configuration Overview
 ### Substitutions
@@ -42,8 +34,6 @@ substitutions:
 - `name`: Internal name for the ESPHome node.
 - `friendly_name`: Display name for the node.
 - `board`: Specifies the ESP8266 board type.
-
----
 
 ## Main Components
 ### Wi-Fi Settings
@@ -122,8 +112,6 @@ interval:
 ```
 - Detects the car’s presence if the distance remains in range for at least 2 minutes (12 cycles of 10 seconds).
 
----
-
 ## Additional Features
 ### Text Sensors
 ```yaml
@@ -157,19 +145,15 @@ ota:
 - **API**: Allows secure communication with Home Assistant.
 - **OTA**: Enables remote firmware updates.
 
----
-
 ## Usage
 1. Flashing the Firmware:
-- Compile and upload the ESPHome configuration to the Wemos D1 Mini.
+    - Compile and upload the ESPHome configuration to the Wemos D1 Mini.
 2. Wi-Fi Setup:
-- If preconfigured, the device will connect automatically. Otherwise, use the fallback AP to configure Wi-Fi.
+    - If preconfigured, the device will connect automatically. Otherwise, use the fallback AP to configure Wi-Fi.
 3. Dashboard Integration:
-- View distance readings and car presence status in Home Assistant.
+    - View distance readings and car presence status in Home Assistant.
 4. Calibrate Distance Range:
-- Adjust the `50` to `200` range in the interval section based on your setup.
-
----
+    - Adjust the `50` to `200` range in the interval section based on your setup.
 
 ## Secrets
 Ensure the following are defined in your `secrets.yaml` file:
