@@ -14,7 +14,7 @@ wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   ap:
-    ssid: ${friendly_name} Fallback AP
+    ssid: ${friendly_name} AP
     password: !secret car_presence_workshop_ap_password
 
 captive_portal:
@@ -36,22 +36,23 @@ text_sensor:
   - platform: wifi_info
     ip_address: 
       name: IP - ${friendly_name}
-    mac_addres:
+    mac_address:
       name: MAC - ${friendly_name}
 
-# Ultrasonic Sensor Configuration
+# HC-SR04 Ultrasonic Sensor Configuration
 sensor:
   - platform: ultrasonic
+    id: ultrasonic_sensor
+    internal: true
     trigger_pin: D1
     echo_pin: D2
-    name: "Ultrasonic Distance"
-    update_interval: 10s
-    id: ultrasonic_sensor
-
+    update_interval: 1s
+          
 binary_sensor:
   - platform: template
-    name: "Car Presence"
     id: car_presence
+    name: "Car Presence"
+    icon: mdi:car
     device_class: occupancy
     lambda: |-
       if (id(distance_in_range).state) {
@@ -60,30 +61,41 @@ binary_sensor:
         return false;
       }
 
+  - platform: template
+    id: distance_in_range
+    internal: true
+
 # Interval filter to check for a range condition lasting more than 2 minutes
 interval:
   - interval: 10s
     then:
       - lambda: |-
-          static int check_counter = 0;
+          static int car_detected = 0;
           float dist = id(ultrasonic_sensor).state;
-          if (dist >= a && dist <= b) {
-            check_counter++;
-          } else {
-            check_counter = 0;
+          if (dist >= 0.6 && dist <= 1) {
+            if(car_detected <= 11) {
+              car_detected++;
+              if(car_detected == 12) {
+                id(distance_in_range).publish_state(true);
+              }
+            }
+          }else {
+            if(car_detected >= -1){
+              car_detected--;
+              if(car_detected == 0) {
+                id(distance_in_range).publish_state(false);
+              }
+            }
           }
 
-          if (check_counter >= 12) {
-            id(distance_in_range).publish_state(true);
-          } else {
-            id(distance_in_range).publish_state(false);
-          }
 
-# Define a template sensor to track if the distance is in range
-binary_sensor:
-  - platform: template
-    name: "Distance In Range"
-    id: distance_in_range
-    internal: true
-    lambda: |-
-      return false;  # Default state is false
+
+
+
+
+
+
+
+
+
+    
