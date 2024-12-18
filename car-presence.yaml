@@ -47,6 +47,9 @@ sensor:
     trigger_pin: D1
     echo_pin: D2
     update_interval: 1s
+    filters:
+      - lambda: |-
+          return isnan(x) ? 4.0 : x;    
 
 number:
   - platform: template
